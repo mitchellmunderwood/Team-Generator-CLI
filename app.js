@@ -9,10 +9,59 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const ExpandPrompt = require("inquirer/lib/prompts/expand");
 
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+
+function teamPrompt() {
+    // var team_members = [];
+    // return team_members;
+    addMemberPrompt();
+}
+
+function memberTypePrompt() {
+    inquirer.prompt([
+        {
+            message: "What type of team member would you like to add?",
+            name: "member_type",
+            type: "list",
+            choices: ["Engineer", "Intern", "Manager"],
+        },
+    ]).then(function (data) {
+        console.log(data.member_type);
+        addMemberPrompt(true);
+        // return data.member_type;
+    })
+}
+
+function endPrompt() {
+    console.log("The Team's data has been recieved and an html is now being generated.");
+}
+
+function addMemberPrompt(boolean) {
+    result = boolean ? "another" : "a";
+    inquirer.prompt([
+        {
+            message: `Would you like to add ${result} team member?`,
+            name: "member_add",
+            type: "list",
+            choices: ["Yes", "No"],
+        },
+    ]).then(function (data) {
+        console.log(data.member_add);
+        data.member_add === "Yes" ? memberTypePrompt() : endPrompt();
+        // return data.member_add;
+    })
+}
+
+// addMemberPrompt();
+teamPrompt();
+
+
+
+
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
