@@ -10,16 +10,13 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 const ExpandPrompt = require("inquirer/lib/prompts/expand");
+const { ppid } = require("process");
 
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
-function teamPrompt() {
-    // var team_members = [];
-    // return team_members;
-    addMemberPrompt();
-}
+let team_members = [];
 
 function memberTypePrompt() {
     inquirer.prompt([
@@ -30,14 +27,100 @@ function memberTypePrompt() {
             choices: ["Engineer", "Intern", "Manager"],
         },
     ]).then(function (data) {
-        console.log(data.member_type);
-        addMemberPrompt(true);
-        // return data.member_type;
+        EmployeePrompt(data.member_type);
     })
+}
+
+function EmployeePrompt(type) {
+    inquirer.prompt([
+        {
+            message: "What is the team member's name?",
+            name: "name",
+            type: "input",
+        },
+        {
+            message: "What is the team member's id number?",
+            name: "id",
+            type: "input",
+        },
+        {
+            message: "What is the team member's email?",
+            name: "email",
+            type: "input",
+        },
+    ]).then(function (data) {
+        switch (type) {
+            case "Manager":
+                managerPrompt(type, data);
+                break;
+            case "Intern":
+                internPrompt(type, data);
+                break;
+            case "Engineer":
+                engineerPrompt(type, data);
+                break;
+        }
+    })
+}
+
+function managerPrompt(type, data_1) {
+    inquirer.prompt([
+        {
+            message: "What is this Manager's office number?",
+            name: "specific",
+            type: "input",
+        },
+    ]).then(function (data_2) {
+        new_member(type, data_1, data_2);
+        addMemberPrompt(true);
+    });
+}
+
+function internPrompt(type, data_1) {
+    inquirer.prompt([
+        {
+            message: "What is the name of this Intern's school?",
+            name: "specific",
+            type: "input",
+        },
+    ]).then(function (data_2) {
+        new_member(type, data_1, data_2);
+        addMemberPrompt(true);
+    });
+}
+
+function engineerPrompt(type, data_1) {
+    inquirer.prompt([
+        {
+            message: "What is this Engineers's github username?",
+            name: "specific",
+            type: "input",
+        },
+    ]).then(function (data_2) {
+        new_member(type, data_1, data_2);
+        addMemberPrompt(true);
+    });
+}
+
+function new_member(type, data_1, data_2) {
+    let new_object = { type: type, name: data_1.name, id: data_1.id, email: data_1.email };
+    switch (type) {
+        case "Manager":
+            new_object.office_number = data_2.specific;
+            break;
+        case "Intern":
+            new_object.school = data_2.specific;
+            break;
+        case "Engineer":
+            new_object.github = data_2.specific;
+            break;
+    }
+    team_members.push(new_object);
 }
 
 function endPrompt() {
     console.log("The Team's data has been recieved and an html is now being generated.");
+    console.log("Here is your team breakdown", team_members)
 }
 
 function addMemberPrompt(boolean) {
@@ -52,12 +135,10 @@ function addMemberPrompt(boolean) {
     ]).then(function (data) {
         console.log(data.member_add);
         data.member_add === "Yes" ? memberTypePrompt() : endPrompt();
-        // return data.member_add;
     })
 }
 
-// addMemberPrompt();
-teamPrompt();
+addMemberPrompt(false);
 
 
 
