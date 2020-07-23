@@ -72,7 +72,7 @@ function managerPrompt(type, data_1) {
         },
     ]).then(function (data_2) {
         new_member(type, data_1, data_2);
-        addMemberPrompt(true);
+        addMemberPrompt();
     });
 }
 
@@ -85,7 +85,7 @@ function internPrompt(type, data_1) {
         },
     ]).then(function (data_2) {
         new_member(type, data_1, data_2);
-        addMemberPrompt(true);
+        addMemberPrompt();
     });
 }
 
@@ -98,7 +98,7 @@ function engineerPrompt(type, data_1) {
         },
     ]).then(function (data_2) {
         new_member(type, data_1, data_2);
-        addMemberPrompt(true);
+        addMemberPrompt();
     });
 }
 
@@ -120,11 +120,17 @@ function new_member(type, data_1, data_2) {
 
 function endPrompt() {
     console.log("The Team's data has been recieved and an html is now being generated.");
-    console.log("Here is your team breakdown", team_members)
+    console.log("Here is your team breakdown", team_members);
+    createHTML(team_members);
+}
+
+function createHTML(team) {
+    let html_doc = render(createTeam(team));
+    console.log(html_doc);
 }
 
 function addMemberPrompt(boolean) {
-    result = boolean ? "another" : "a";
+    result = "start" ? "a" : "another";
     inquirer.prompt([
         {
             message: `Would you like to add ${result} team member?`,
@@ -133,12 +139,26 @@ function addMemberPrompt(boolean) {
             choices: ["Yes", "No"],
         },
     ]).then(function (data) {
-        console.log(data.member_add);
         data.member_add === "Yes" ? memberTypePrompt() : endPrompt();
     })
 }
 
-addMemberPrompt(false);
+function createTeam(members) {
+    return members.map((member) => {
+        switch (member.type) {
+            case "Manager":
+                return new Manager(member.name, member.id, member.email, member.office_number);
+            case "Engineer":
+                return new Engineer(member.name, member.id, member.email, member.github);
+            case "Intern":
+                return new Intern(member.name, member.id, member.email, member.school);
+        }
+    })
+}
+
+addMemberPrompt("start");
+
+
 
 
 
