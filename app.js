@@ -126,7 +126,14 @@ function endPrompt() {
 
 function createHTML(team) {
     let html_doc = render(createTeam(team));
-    console.log(html_doc);
+    fs.writeFile("team.html", html_doc, function (err) {
+        if (err) {
+            return console.log(err);
+        }
+        console.log("Successfully created your html file");
+    });
+
+
 }
 
 function addMemberPrompt(boolean) {
