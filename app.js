@@ -120,8 +120,8 @@ function new_member(type, data_1, data_2) {
 
 function endPrompt() {
     console.log("The Team's data has been recieved and an html is now being generated.");
-    console.log("Here is your team breakdown", team_members);
     createHTML(team_members);
+    console.log("Your team's file has been generated and is in the 'output' folder.");
 }
 
 function createHTML(team) {
