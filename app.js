@@ -126,7 +126,7 @@ function endPrompt() {
 
 function createHTML(team) {
     let html_doc = render(createTeam(team));
-    fs.writeFile("team.html", html_doc, function (err) {
+    fs.writeFile("./output/team.html", html_doc, function (err) {
         if (err) {
             return console.log(err);
         }
