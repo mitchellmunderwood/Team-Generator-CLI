@@ -1,0 +1,42 @@
+.card {
+    margin-left: 5px;
+}
+
+.list-group-item {
+    border: none;
+    color: black;
+    font-size: 20px;
+}
+
+.jumbotron {
+    background: grey;
+    color: white;
+}
+
+.engineer > div, .engineer li {
+    color: white;
+    background: blue;
+}
+
+.engineer:hover, .manager:hover, .intern:hover {
+    opacity: 0.8;
+}
+
+.manager > div, .manager li {
+    color: white;
+    background: green;
+}
+
+.intern > div, .intern li {
+    color: white;
+    background: rgb(250, 200, 0);
+}
+
+.employee-card { 
+    min-width: 300px;
+    border-radius: 10px;
+}
+
+.icon {
+    text-align: center;
+}
